@@ -1,12 +1,16 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: process.env.EMAIL_USERNAME,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
+try {
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+} catch (error) {
+  console.log("error while settig up SMTP");
+}
 
 exports.sendmail = async (req, res) => {
   const email = req.email;
