@@ -70,7 +70,7 @@ exports.register = async (req, res) => {
     const user = await User.findOne({ email: email });
     if (user) {
       return res.status(400).json({
-        error: "User alredy exits",
+        error: "User alredy exits, please login",
       });
     }
     const hashpass = bcrypt.hashSync(password, 10);

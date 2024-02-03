@@ -1,13 +1,19 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-try {
-  const transporter = nodemailer.createTransport({
+
+var transporter = undefined;
+const initializeServer = () => {
+  transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
       user: process.env.EMAIL_USERNAME,
       pass: process.env.EMAIL_PASSWORD,
     },
   });
+};
+
+try {
+  initializeServer();
 } catch (error) {
   console.log("error while settig up SMTP");
 }
@@ -67,12 +73,14 @@ exports.sendmail = async (req, res) => {
     });
     res.status(200).json({
       verified: false,
-      message: "verification email successfully sent",
+      message:
+        "verification email successfully sent, please verify before login",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       verified: false,
-      error: "user created but error while sending verification email",
+      error: "error while sending verification email",
     });
   }
 };
